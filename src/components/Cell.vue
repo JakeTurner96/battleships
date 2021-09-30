@@ -2,11 +2,11 @@
     <div
         class="
             items-center
-            bg-gray-300
+            bg-blue-300
             flex-cell
             pb-cell
             m-0.5
-            hover:bg-blue-500
+            hover:bg-gray-300
             cursor-pointer
         "
         v-if="!isSelected"
@@ -28,6 +28,7 @@
 </template>
 
 <script lang="ts">
+// vue
 import { defineComponent } from "vue";
 
 export default defineComponent({

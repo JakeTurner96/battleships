@@ -1,4 +1,5 @@
 <template>
+    <ShipSelector />
     <div class="flex flex-wrap justify-center">
         <Cell
             v-for="cell in gridState"
@@ -11,14 +12,17 @@
 </template>
 
 <script lang="ts">
+// vue
 import { defineComponent, onMounted, ref } from "vue";
 
 // components
 import Cell from "../components/Cell.vue";
+import ShipSelector from "../components/ShipSelector.vue";
 
 export default defineComponent({
     components: {
         Cell,
+        ShipSelector,
     },
     setup() {
         const gridState = ref();
