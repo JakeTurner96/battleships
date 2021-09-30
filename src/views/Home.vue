@@ -1,5 +1,5 @@
 <template>
-    <ShipSelector />
+    <ShipSelector :callback="setSelectedShip" />
     <div class="flex flex-wrap justify-center">
         <Cell
             v-for="cell in gridState"
@@ -26,6 +26,7 @@ export default defineComponent({
     },
     setup() {
         const gridState = ref();
+        const selectedShip = ref();
 
         const setState = (start: number, length: number) => {
             for (var i = 0; i < length; i++) {
@@ -37,7 +38,11 @@ export default defineComponent({
 
         const test = (data: number) => {
             console.log(data);
-            setState(data, 5);
+            setState(data, selectedShip.value);
+        };
+
+        const setSelectedShip = (ship: number) => {
+            selectedShip.value = ship;
         };
 
         onMounted(() => {
@@ -55,6 +60,7 @@ export default defineComponent({
         return {
             test,
             gridState,
+            setSelectedShip,
         };
     },
 });

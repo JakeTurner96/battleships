@@ -7,6 +7,7 @@
                 :key="ship.id"
                 :length="ship.length"
                 :name="ship.name"
+                :callback="callback"
             />
         </div>
     </Sidebar>
@@ -32,7 +33,11 @@ export default defineComponent({
         Sidebar,
         Ship,
     },
-    props: {},
+    props: {
+        callback: {
+            type: Object,
+        },
+    },
     setup(props: any) {
         const isVisible = ref(false);
         return { isVisible, shipConfig };

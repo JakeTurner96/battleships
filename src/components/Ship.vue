@@ -1,6 +1,6 @@
 <template>
     <div
-        @click="test"
+        @click="callback(length)"
         @mouseenter="isShip = true"
         @mouseleave="isShip = false"
         class="flex w-max cursor-pointer space-x-1"
@@ -31,6 +31,9 @@ export default defineComponent({
         name: {
             type: String,
             default: "",
+        },
+        callback: {
+            type: Object,
         },
     },
     setup(props: any) {
