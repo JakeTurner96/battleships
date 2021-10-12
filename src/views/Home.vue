@@ -38,14 +38,16 @@ export default defineComponent({
         };
 
         const placeShip = (data: number) => {
-            if (selectedShip.value.length) {
-                setState(data, selectedShip.value.length);
-                shipState.value.forEach((ship: any) => {
-                    if (ship.id == selectedShip.value.id) {
-                        ship.isPlaced = true;
-                    }
-                });
-                selectedShip.value = {};
+            if (data + (selectedShip.value.length - 1) * 10 <= 100) {
+                if (selectedShip.value.length) {
+                    setState(data, selectedShip.value.length);
+                    shipState.value.forEach((ship: any) => {
+                        if (ship.id == selectedShip.value.id) {
+                            ship.isPlaced = true;
+                        }
+                    });
+                    selectedShip.value = {};
+                }
             }
         };
 
