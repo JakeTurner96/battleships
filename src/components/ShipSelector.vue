@@ -35,7 +35,7 @@ export default defineComponent({
     },
     props: {
         callback: {
-            type: Object,
+            type: Function,
         },
     },
     setup(props: any) {

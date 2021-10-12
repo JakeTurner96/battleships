@@ -33,7 +33,7 @@ export default defineComponent({
             default: "",
         },
         callback: {
-            type: Object,
+            type: Function,
         },
     },
     setup(props: any) {

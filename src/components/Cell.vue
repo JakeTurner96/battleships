@@ -9,22 +9,19 @@
             hover:bg-gray-300
             cursor-pointer
         "
-        v-if="!isSelected"
-        @click="callback(id)"
-    ></div>
+        v-if="!isSelected && !isHover"
+        @mouseenter="hoverEnterCallback(id)"
+    />
     <div
-        class="
-            items-center
-            bg-red-400
-            flex-cell
-            pb-cell
-            m-0.5
-            hover:bg-blue-500
-            cursor-pointer
-        "
+        class="items-center bg-red-400 flex-cell pb-cell m-0.5 cursor-pointer"
         v-if="isSelected"
+    />
+    <div
+        class="items-center bg-gray-300 flex-cell pb-cell m-0.5 cursor-pointer"
+        v-if="!isSelected && isHover"
         @click="callback(id)"
-    ></div>
+        @mouseleave="hoverLeaveCallback(id)"
+    />
 </template>
 
 <script lang="ts">
@@ -38,11 +35,21 @@ export default defineComponent({
             type: Number,
         },
         callback: {
-            type: Object,
+            type: Function,
         },
         isSelected: {
             type: Boolean,
             default: false,
+        },
+        isHover: {
+            type: Boolean,
+            default: false,
+        },
+        hoverEnterCallback: {
+            type: Function,
+        },
+        hoverLeaveCallback: {
+            type: Function,
         },
     },
     setup(props: any) {
