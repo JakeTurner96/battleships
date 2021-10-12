@@ -1,41 +1,33 @@
 <template>
-    <ShipSelector :callback="setSelectedShip" />
-    <Button @click="logTest" />
-    <div class="flex flex-wrap justify-center">
-        <Cell
-            v-for="cell in gridState"
-            :key="cell.id"
-            :id="cell.id"
-            :isHover="cell.isHover"
-            :isSelected="cell.isSelected"
-            :callback="test"
-            :hoverEnterCallback="hoverEnterCallback"
-            :hoverLeaveCallback="hoverLeaveCallback"
-        />
-    </div>
+    <ShipSelector :callback="setSelectedShip" :shipState="shipState" />
+    <Grid
+        :gridState="gridState"
+        :placeShipCallback="placeShip"
+        :hoverEnterCallback="hoverEnterCallback"
+        :hoverLeaveCallback="hoverLeaveCallback"
+    />
 </template>
 
 <script lang="ts">
 // vue
 import { defineComponent, onMounted, ref } from "vue";
 
-// components
-import Cell from "../components/Cell.vue";
-import ShipSelector from "../components/ShipSelector.vue";
+// config
+import shipConfig from "@/config/shipConfig";
 
-// primevue
-import Button from "primevue/button";
+// components
+import Grid from "@/components/Grid.vue";
+import ShipSelector from "@/components/ShipSelector.vue";
 
 export default defineComponent({
     components: {
-        Cell,
+        Grid,
         ShipSelector,
-        Button,
     },
     setup() {
         const gridState = ref();
+        const shipState = ref(shipConfig);
         const selectedShip = ref();
-        const placedShips = ref<number[]>([]);
 
         const setState = (start: number, length: number) => {
             for (var i = 0; i < length; i++) {
@@ -45,8 +37,20 @@ export default defineComponent({
             }
         };
 
+        const placeShip = (data: number) => {
+            if (selectedShip.value.length) {
+                setState(data, selectedShip.value.length);
+                shipState.value.forEach((ship: any) => {
+                    if (ship.id == selectedShip.value.id) {
+                        ship.isPlaced = true;
+                    }
+                });
+                selectedShip.value = {};
+            }
+        };
+
         const hoverEnterCallback = (start: number) => {
-            for (var i = 0; i < selectedShip.value; i++) {
+            for (var i = 0; i < selectedShip.value.length; i++) {
                 gridState.value.find(
                     (e: any) => e.id == start + 10 * i
                 ).isHover = true;
@@ -59,39 +63,27 @@ export default defineComponent({
             });
         };
 
-        const test = (data: number) => {
-            if (selectedShip.value) {
-                setState(data, selectedShip.value);
-                placedShips.value.push(selectedShip.value);
-            }
-        };
-
-        const logTest = () => {
-            console.log(placedShips.value);
-        };
-
-        const setSelectedShip = (ship: number) => {
+        const setSelectedShip = (ship: any) => {
             selectedShip.value = ship;
         };
 
         onMounted(() => {
             const cells = [];
             for (var i = 1; i <= 100; i++) {
-                const cell = {
+                cells.push({
                     id: i,
                     isSelected: false,
                     isDestroyed: false,
                     isHover: false,
-                };
-                cells.push(cell);
+                });
             }
             gridState.value = cells;
         });
 
         return {
-            test,
-            logTest,
+            placeShip,
             gridState,
+            shipState,
             setSelectedShip,
             hoverEnterCallback,
             hoverLeaveCallback,

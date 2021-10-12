@@ -34,9 +34,6 @@ export default defineComponent({
         id: {
             type: Number,
         },
-        callback: {
-            type: Function,
-        },
         isSelected: {
             type: Boolean,
             default: false,
@@ -44,6 +41,9 @@ export default defineComponent({
         isHover: {
             type: Boolean,
             default: false,
+        },
+        callback: {
+            type: Function,
         },
         hoverEnterCallback: {
             type: Function,

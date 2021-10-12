@@ -3,11 +3,12 @@
     <Sidebar v-model:visible="isVisible" :baseZIndex="1000">
         <div class="space-y-2">
             <Ship
-                v-for="ship in shipConfig"
+                v-for="ship in shipState"
                 :key="ship.id"
+                :ship="ship"
                 :length="ship.length"
                 :name="ship.name"
-                :callback="callback"
+                :callback="shipClickCallback"
             />
         </div>
     </Sidebar>
@@ -34,13 +35,25 @@ export default defineComponent({
         Ship,
     },
     props: {
+        shipState: {
+            type: Array,
+        },
+        placedShips: {
+            type: Array,
+        },
         callback: {
             type: Function,
         },
     },
     setup(props: any) {
         const isVisible = ref(false);
-        return { isVisible, shipConfig };
+
+        const shipClickCallback = (ship: any) => {
+            props.callback(ship);
+            isVisible.value = false;
+        };
+
+        return { isVisible, shipConfig, shipClickCallback };
     },
 });
 </script>

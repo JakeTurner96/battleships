@@ -1,21 +1,33 @@
 <template>
-    <div
-        @click="callback(length)"
-        @mouseenter="isShip = true"
-        @mouseleave="isShip = false"
-        class="flex w-max cursor-pointer space-x-1"
-    >
+    <div v-if="!ship.isPlaced">
         <div
-            :class="
-                isShip
-                    ? 'bg-red-400 flex w-9 h-9 shadow-xl'
-                    : 'bg-red-400 flex w-8 h-8 '
-            "
-            v-for="index in length"
-            :key="index"
-        />
+            @click="callback(ship)"
+            @mouseenter="isShip = true"
+            @mouseleave="isShip = false"
+            class="flex w-max cursor-pointer space-x-1"
+        >
+            <div
+                :class="
+                    isShip
+                        ? 'bg-red-400 flex w-9 h-9 shadow-xl'
+                        : 'bg-red-400 flex w-8 h-8 '
+                "
+                v-for="index in length"
+                :key="index"
+            />
+        </div>
+        <label>{{ name }}</label>
     </div>
-    <label>{{ name }}</label>
+    <div v-if="ship.isPlaced">
+        <div class="flex w-max space-x-1">
+            <div
+                class="bg-gray-300 flex w-8 h-8"
+                v-for="index in length"
+                :key="index"
+            />
+        </div>
+        <del class="text-gray-300">{{ name }}</del>
+    </div>
 </template>
 
 <script lang="ts">
@@ -25,6 +37,9 @@ import { defineComponent, ref } from "vue";
 export default defineComponent({
     components: {},
     props: {
+        ship: {
+            type: Object,
+        },
         length: {
             type: Number,
         },
@@ -39,12 +54,8 @@ export default defineComponent({
     setup(props: any) {
         const isShip = ref(false);
 
-        const test = () => {
-            console.log(props.length);
-        };
         return {
             isShip,
-            test,
         };
     },
 });
