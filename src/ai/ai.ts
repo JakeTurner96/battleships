@@ -1,27 +1,34 @@
 import shipConfig from "@/config/shipConfig";
 
+// models
+import { Cell } from "@/models/cell";
+
 export const useAiService = () => {
-    // const placeShips = () => {
-    //     const placedCoords: number[] = [];
-
-    //     console.log(placedCoords);
-    // };
-
-    const generateAiGridState = () => {
-        const cells: any[] = [];
+    const generateGrid = () => {
+        const cells: Cell[] = [];
         for (let i = 1; i <= 100; i++) {
             cells.push({
                 id: i,
                 isSelected: false,
                 isDestroyed: false,
+                isMiss: false,
                 isHover: false,
             });
         }
-        const aiGrid = test();
-        aiGrid.forEach((coord: number) => {
-            cells.find((x: any) => x.id == coord).isSelected = true;
-        });
         return cells;
+    };
+
+    const generateAiGridState = () => {
+        const grid = generateGrid();
+        const shipCoords = test();
+        console.log(shipCoords);
+        shipCoords.forEach((coord: number) => {
+            const found = grid.find((cell: Cell) => cell.id == coord);
+            if (found) {
+                found.isSelected = true;
+            }
+        });
+        return grid;
     };
 
     const test = () => {
@@ -69,6 +76,7 @@ export const useAiService = () => {
     };
 
     return {
+        generateGrid,
         genShipCoords,
         canPlaceShip,
         test,

@@ -1,15 +1,25 @@
 <template>
-    <div class="flex flex-wrap justify-center">
-        <Cell
-            v-for="cell in gridState"
-            :key="cell.id"
-            :id="cell.id"
-            :isHover="cell.isHover"
-            :isSelected="cell.isSelected"
-            :callback="placeShipCallback"
-            :hoverEnterCallback="hoverEnterCallback"
-            :hoverLeaveCallback="hoverLeaveCallback"
-        />
+    <div>
+        <div v-if="isAi" class="flex flex-wrap justify-center">
+            <Cell
+                v-for="cell in gridState"
+                :key="cell.id"
+                :cell="cell"
+                :isAi="isAi"
+                :callback="makeMove"
+            />
+        </div>
+
+        <div v-if="!isAi" class="flex flex-wrap justify-center">
+            <Cell
+                v-for="cell in gridState"
+                :key="cell.id"
+                :cell="cell"
+                :callback="placeShipCallback"
+                :hoverEnterCallback="hoverEnterCallback"
+                :hoverLeaveCallback="hoverLeaveCallback"
+            />
+        </div>
     </div>
 </template>
 
@@ -18,13 +28,20 @@
 import { defineComponent } from "vue";
 
 // components
-import Cell from "../components/Cell.vue";
+import Cell from "@/components/Cell.vue";
 
 export default defineComponent({
     components: {
         Cell,
     },
     props: {
+        isAi: {
+            type: Boolean,
+            default: false,
+        },
+        makeMove: {
+            type: Function,
+        },
         gridState: {
             type: Object,
         },
@@ -38,7 +55,7 @@ export default defineComponent({
             type: Function,
         },
     },
-    setup() {
+    setup(props: any) {
         return {};
     },
 });

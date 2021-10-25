@@ -5,20 +5,25 @@
             :callback="setSelectedShip"
             :shipState="shipState"
         />
-        <Button @click="logData" />
         <div class="flex justify-center space-x-10">
-            <Grid
-                :gridState="gridState"
-                :placeShipCallback="placeShip"
-                :hoverEnterCallback="hoverEnterCallback"
-                :hoverLeaveCallback="hoverLeaveCallback"
-            />
-            <Grid
-                :gridState="aiGridState"
-                :placeShipCallback="placeShip"
-                :hoverEnterCallback="hoverEnterCallback"
-                :hoverLeaveCallback="hoverLeaveCallback"
-            />
+            <div>
+                You
+                <Grid
+                    :isAi="false"
+                    :gridState="p1GridState"
+                    :placeShipCallback="placeShip"
+                    :hoverEnterCallback="hoverEnterCallback"
+                    :hoverLeaveCallback="hoverLeaveCallback"
+                />
+            </div>
+            <div>
+                Computer
+                <Grid
+                    :isAi="true"
+                    :gridState="p2GridState"
+                    :makeMove="makeMove"
+                />
+            </div>
         </div>
         <div class="flex justify-center">
             <Button v-if="placedShips == 5" label="Begin" />
@@ -51,8 +56,8 @@ export default defineComponent({
     },
     setup() {
         // reactive
-        const gridState = ref();
-        const aiGridState = ref();
+        const p1GridState = ref();
+        const p2GridState = ref();
         const shipState = ref(shipConfig);
         const selectedShip = ref();
         const placedShips = ref(0);
@@ -61,14 +66,9 @@ export default defineComponent({
         const aiService = useAiService();
 
         // methods
-        const logData = () => {
-            console.log(aiGridState.value);
-            console.log(gridState.value);
-        };
-
         const setState = (start: number, length: number) => {
             for (var i = 0; i < length; i++) {
-                gridState.value.find(
+                p1GridState.value.find(
                     (e: any) => e.id == start + 10 * i
                 ).isSelected = true;
             }
@@ -92,7 +92,7 @@ export default defineComponent({
         const hoverEnterCallback = (start: number) => {
             if (selectedShip.value) {
                 for (var i = 0; i < selectedShip.value.length; i++) {
-                    gridState.value.find(
+                    p1GridState.value.find(
                         (e: any) => e.id == start + 10 * i
                     ).isHover = true;
                 }
@@ -100,9 +100,26 @@ export default defineComponent({
         };
 
         const hoverLeaveCallback = () => {
-            gridState.value.forEach((e: any) => {
-                e.isHover = false;
+            p1GridState.value.forEach((cell: any) => {
+                cell.isHover = false;
             });
+        };
+
+        const makeMove = async (selectedCell: any) => {
+            var cell = p2GridState.value.find(
+                (e: any) => e.id == selectedCell.id
+            );
+            if (selectedCell.isSelected) {
+                var hitAudio = new Audio(require("@/resources/audio/oof.mp3"));
+                hitAudio.play();
+                cell.isDestroyed = true;
+            } else {
+                var missAudio = new Audio(
+                    require("@/resources/audio/splash.mp3")
+                );
+                missAudio.play();
+                cell.isMiss = true;
+            }
         };
 
         const setSelectedShip = (ship: any) => {
@@ -111,29 +128,20 @@ export default defineComponent({
 
         // lifecycle
         onMounted(() => {
-            const cells = [];
-            for (var i = 1; i <= 100; i++) {
-                cells.push({
-                    id: i,
-                    isSelected: false,
-                    isDestroyed: false,
-                    isHover: false,
-                });
-            }
-            gridState.value = cells;
-            aiGridState.value = aiService.generateAiGridState();
+            p1GridState.value = aiService.generateGrid();
+            p2GridState.value = aiService.generateAiGridState();
         });
 
         return {
-            placeShip,
-            gridState,
+            p1GridState,
+            p2GridState,
+            placedShips,
             shipState,
+            makeMove,
+            placeShip,
             setSelectedShip,
             hoverEnterCallback,
             hoverLeaveCallback,
-            logData,
-            placedShips,
-            aiGridState,
         };
     },
 });

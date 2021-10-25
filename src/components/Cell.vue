@@ -1,44 +1,46 @@
 <template>
     <div
-        class="
+        v-if="isAi"
+        :class="`
+            ${aiCellColor}
             items-center
-            bg-blue-300
             flex-cell
             pb-cell
             m-0.5
-            hover:bg-gray-300
             cursor-pointer
-        "
-        v-if="!isSelected && !isHover"
-        @mouseenter="hoverEnterCallback(id)"
+        `"
+        @click="callback(cell)"
     />
     <div
-        class="items-center bg-red-400 flex-cell pb-cell m-0.5 cursor-pointer"
-        v-if="isSelected"
-    />
-    <div
-        class="items-center bg-gray-300 flex-cell pb-cell m-0.5 cursor-pointer"
-        v-if="!isSelected && isHover"
-        @click="callback(id)"
-        @mouseleave="hoverLeaveCallback(id)"
+        v-if="!isAi"
+        :class="`
+            ${cellColor}
+            items-center
+            flex-cell
+            pb-cell
+            m-0.5
+            cursor-pointer
+        `"
+        @click="callback(cell.id)"
+        @mouseenter="hoverEnterCallback(cell.id)"
+        @mouseleave="hoverLeaveCallback()"
     />
 </template>
 
 <script lang="ts">
 // vue
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
+
+// model
+import { Cell } from "@/models/cell";
 
 export default defineComponent({
     components: {},
     props: {
-        id: {
-            type: Number,
+        cell: {
+            type: Object as () => Cell,
         },
-        isSelected: {
-            type: Boolean,
-            default: false,
-        },
-        isHover: {
+        isAi: {
             type: Boolean,
             default: false,
         },
@@ -53,7 +55,30 @@ export default defineComponent({
         },
     },
     setup(props: any) {
-        return {};
+        // computed
+        const cellColor = computed(() => {
+            if (props.cell.isDestroyed) {
+                return "bg-black";
+            } else if (props.cell.isSelected) {
+                return "bg-red-400";
+            } else if (props.cell.isHover) {
+                return "bg-gray-200";
+            } else {
+                return "bg-blue-300";
+            }
+        });
+
+        const aiCellColor = computed(() => {
+            if (props.cell.isDestroyed) {
+                return "bg-gray-500";
+            } else if (props.cell.isMiss) {
+                return "bg-blue-500";
+            } else {
+                return "bg-blue-300";
+            }
+        });
+
+        return { cellColor, aiCellColor };
     },
 });
 </script>
