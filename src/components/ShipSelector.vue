@@ -1,17 +1,14 @@
 <template>
-    <Button icon="pi pi-bars" @click="isVisible = true" />
-    <Sidebar v-model:visible="isVisible" :baseZIndex="1000">
-        <div class="space-y-2">
-            <Ship
-                v-for="ship in shipState"
-                :key="ship.id"
-                :ship="ship"
-                :length="ship.length"
-                :name="ship.name"
-                :callback="shipClickCallback"
-            />
-        </div>
-    </Sidebar>
+    <Panel header="Fleet">
+        <Ship
+            v-for="ship in shipState"
+            :key="ship.id"
+            :ship="ship"
+            :length="ship.length"
+            :name="ship.name"
+            :callback="shipClickCallback"
+        />
+    </Panel>
 </template>
 
 <script lang="ts">
@@ -19,8 +16,7 @@
 import { defineComponent, ref } from "vue";
 
 // primevue
-import Button from "primevue/button";
-import Sidebar from "primevue/sidebar";
+import Panel from "primevue/panel";
 
 // config
 import shipConfig from "@/config/shipConfig";
@@ -30,9 +26,8 @@ import Ship from "@/components/Ship.vue";
 
 export default defineComponent({
     components: {
-        Button,
-        Sidebar,
         Ship,
+        Panel,
     },
     props: {
         shipState: {

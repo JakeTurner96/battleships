@@ -1,33 +1,26 @@
 <template>
-    <div class="space-y-2">
+    <div class="flex justify-center space-x-10 mt-10">
         <ShipSelector
             v-if="placedShips < 5"
             :callback="setSelectedShip"
             :shipState="shipState"
         />
-        <div class="flex justify-center space-x-10">
-            <div>
-                You
-                <Grid
-                    :isAi="false"
-                    :gridState="p1GridState"
-                    :placeShipCallback="placeShip"
-                    :hoverEnterCallback="hoverEnterCallback"
-                    :hoverLeaveCallback="hoverLeaveCallback"
-                />
-            </div>
-            <div>
-                Computer
-                <Grid
-                    :isAi="true"
-                    :gridState="p2GridState"
-                    :makeMove="makeMove"
-                />
-            </div>
+        <div>
+            You
+            <Grid
+                :isAi="false"
+                :gridState="p1GridState"
+                :placeShipCallback="placeShip"
+                :hoverEnterCallback="hoverEnterCallback"
+                :hoverLeaveCallback="hoverLeaveCallback"
+                :makeMove="makeMove"
+            />
         </div>
-        <div class="flex justify-center">
-            <Button v-if="placedShips == 5" label="Begin" />
+        <div v-if="placedShips == 5">
+            Computer
+            <Grid :isAi="true" :gridState="p2GridState" :makeMove="makeMove" />
         </div>
+        <Button @click="aiService.aiMakeMove(p1GridState, previousMoves)" />
     </div>
 </template>
 
@@ -61,6 +54,7 @@ export default defineComponent({
         const shipState = ref(shipConfig);
         const selectedShip = ref();
         const placedShips = ref(0);
+        const previousMoves = ref([]);
 
         // services
         const aiService = useAiService();
@@ -105,19 +99,17 @@ export default defineComponent({
             });
         };
 
-        const makeMove = async (selectedCell: any) => {
-            var cell = p2GridState.value.find(
-                (e: any) => e.id == selectedCell.id
-            );
+        const makeMove = async (selectedCell: any, grid: any) => {
+            var cell = grid.find((e: any) => e.id == selectedCell.id);
             if (selectedCell.isSelected) {
-                var hitAudio = new Audio(require("@/resources/audio/oof.mp3"));
-                hitAudio.play();
+                // var hitAudio = new Audio(require("@/resources/audio/oof.mp3"));
+                // hitAudio.play();
                 cell.isDestroyed = true;
             } else {
-                var missAudio = new Audio(
-                    require("@/resources/audio/splash.mp3")
-                );
-                missAudio.play();
+                // var missAudio = new Audio(
+                //     require("@/resources/audio/splash.mp3")
+                // );
+                // missAudio.play();
                 cell.isMiss = true;
             }
         };
@@ -137,6 +129,8 @@ export default defineComponent({
             p2GridState,
             placedShips,
             shipState,
+            aiService,
+            previousMoves,
             makeMove,
             placeShip,
             setSelectedShip,

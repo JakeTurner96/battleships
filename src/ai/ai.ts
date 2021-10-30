@@ -75,11 +75,43 @@ export const useAiService = () => {
         return canPlace;
     };
 
+    const makeMove = async (selectedCell: any, grid: any) => {
+        const cell = grid.find((e: any) => e.id == selectedCell);
+        console.log(cell);
+        console.log(grid);
+        if (cell.isSelected) {
+            console.log();
+            // var hitAudio = new Audio(require("@/resources/audio/oof.mp3"));
+            // hitAudio.play();
+            cell.isDestroyed = true;
+        } else {
+            // var missAudio = new Audio(
+            //     require("@/resources/audio/splash.mp3")
+            // );
+            // missAudio.play();
+            cell.isMiss = true;
+        }
+    };
+
+    const aiMakeMove = (grid: any, previousMoves: any) => {
+        const cell = Math.floor(Math.random() * 100) + 1;
+        const found = previousMoves.find((move: any) => move == cell);
+        if (found) {
+            aiMakeMove(grid, previousMoves);
+        } else {
+            // make move
+            makeMove(cell, grid);
+            previousMoves.push(cell);
+        }
+    };
+
     return {
         generateGrid,
         genShipCoords,
         canPlaceShip,
         test,
         generateAiGridState,
+        aiMakeMove,
+        makeMove,
     };
 };

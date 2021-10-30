@@ -5,11 +5,12 @@
             ${aiCellColor}
             items-center
             flex-cell
-            pb-cell
+            pb-9
             m-0.5
             cursor-pointer
+            shadow-md
         `"
-        @click="callback(cell)"
+        @click="callback(cell, gridState)"
     />
     <div
         v-if="!isAi"
@@ -17,11 +18,12 @@
             ${cellColor}
             items-center
             flex-cell
-            pb-cell
+            pb-9
             m-0.5
             cursor-pointer
+            shadow-md
         `"
-        @click="callback(cell.id)"
+        @click="callback(cell.id, gridState)"
         @mouseenter="hoverEnterCallback(cell.id)"
         @mouseleave="hoverLeaveCallback()"
     />
@@ -53,6 +55,9 @@ export default defineComponent({
         hoverLeaveCallback: {
             type: Function,
         },
+        gridState: {
+            type: Array,
+        },
     },
     setup(props: any) {
         // computed
@@ -63,6 +68,8 @@ export default defineComponent({
                 return "bg-red-400";
             } else if (props.cell.isHover) {
                 return "bg-gray-200";
+            } else if (props.cell.isMiss) {
+                return "bg-blue-500";
             } else {
                 return "bg-blue-300";
             }

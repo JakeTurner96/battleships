@@ -5,9 +5,9 @@ module.exports = {
         flex: {
             cell: "0 0 9%",
         },
-        padding: {
-            cell: "9%",
-        },
+        // padding: {
+        //     cell: "9%",
+        // },
         extend: {},
     },
     variants: {

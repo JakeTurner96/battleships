@@ -1,32 +1,23 @@
 <template>
-    <div v-if="!ship.isPlaced">
-        <div
-            @click="callback(ship)"
-            @mouseenter="isShip = true"
-            @mouseleave="isShip = false"
-            class="flex w-max cursor-pointer space-x-1"
-        >
-            <div
-                :class="
-                    isShip
-                        ? 'bg-red-400 flex w-9 h-9 shadow-xl'
-                        : 'bg-red-400 flex w-8 h-8 '
-                "
-                v-for="index in length"
-                :key="index"
-            />
-        </div>
+    <div v-if="!ship.isPlaced" class="py-1">
         <label>{{ name }}</label>
-    </div>
-    <div v-if="ship.isPlaced">
-        <div class="flex w-max space-x-1">
+        <div @click="callback(ship)" class="flex cursor-pointer space-x-1">
             <div
-                class="bg-gray-300 flex w-8 h-8"
+                class="bg-red-400 flex w-9 h-9 shadow-xl"
                 v-for="index in length"
                 :key="index"
             />
         </div>
+    </div>
+    <div v-if="ship.isPlaced" class="py-1">
         <del class="text-gray-300">{{ name }}</del>
+        <div class="flex space-x-1">
+            <div
+                class="bg-gray-300 flex w-9 h-9"
+                v-for="index in length"
+                :key="index"
+            />
+        </div>
     </div>
 </template>
 

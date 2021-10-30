@@ -7,6 +7,7 @@
                 :cell="cell"
                 :isAi="isAi"
                 :callback="makeMove"
+                :gridState="gridState"
             />
         </div>
 
@@ -18,6 +19,7 @@
                 :callback="placeShipCallback"
                 :hoverEnterCallback="hoverEnterCallback"
                 :hoverLeaveCallback="hoverLeaveCallback"
+                :gridState="gridState"
             />
         </div>
     </div>
