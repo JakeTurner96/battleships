@@ -10,7 +10,7 @@
         </div>
     </div>
     <div v-if="ship.isPlaced" class="py-1">
-        <del class="text-gray-300">{{ name }}</del>
+        <del class="text-gray-500">{{ name }}</del>
         <div class="flex space-x-1">
             <div
                 class="bg-gray-300 flex w-9 h-9"

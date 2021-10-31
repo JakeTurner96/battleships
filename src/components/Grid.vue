@@ -1,22 +1,15 @@
 <template>
-    <div>
-        <div v-if="isAi" class="flex flex-wrap justify-center">
-            <Cell
-                v-for="cell in gridState"
-                :key="cell.id"
-                :cell="cell"
-                :isAi="isAi"
-                :callback="makeMove"
-                :gridState="gridState"
-            />
+    <div class="shadow-md bg-white rounded-md">
+        <div class="text-xl pl-4 pt-4 pb-2 border-b">
+            {{ playerName }}
         </div>
-
-        <div v-if="!isAi" class="flex flex-wrap justify-center">
+        <div class="flex flex-wrap justify-center p-4">
             <Cell
                 v-for="cell in gridState"
                 :key="cell.id"
+                :isAi="isAi"
                 :cell="cell"
-                :callback="placeShipCallback"
+                :callback="cellCallback"
                 :hoverEnterCallback="hoverEnterCallback"
                 :hoverLeaveCallback="hoverLeaveCallback"
                 :gridState="gridState"
@@ -41,14 +34,15 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
-        makeMove: {
+        playerName: {
+            type: String,
+            default: "",
+        },
+        cellCallback: {
             type: Function,
         },
         gridState: {
             type: Object,
-        },
-        placeShipCallback: {
-            type: Function,
         },
         hoverEnterCallback: {
             type: Function,

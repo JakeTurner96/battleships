@@ -8,7 +8,6 @@
             pb-9
             m-0.5
             cursor-pointer
-            shadow-md
         `"
         @click="callback(cell, gridState)"
     />
@@ -21,7 +20,6 @@
             pb-9
             m-0.5
             cursor-pointer
-            shadow-md
         `"
         @click="callback(cell.id, gridState)"
         @mouseenter="hoverEnterCallback(cell.id)"

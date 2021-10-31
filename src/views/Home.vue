@@ -1,26 +1,35 @@
 <template>
-    <div class="flex justify-center space-x-10 mt-10">
-        <ShipSelector
-            v-if="placedShips < 5"
-            :callback="setSelectedShip"
-            :shipState="shipState"
-        />
-        <div>
-            You
-            <Grid
-                :isAi="false"
-                :gridState="p1GridState"
-                :placeShipCallback="placeShip"
-                :hoverEnterCallback="hoverEnterCallback"
-                :hoverLeaveCallback="hoverLeaveCallback"
-                :makeMove="makeMove"
+    <div class="font-mono">
+        <div class="flex justify-center text-3xl bg-white shadow-md p-2">
+            Battleships
+        </div>
+        <div class="flex justify-center space-x-10 mt-10">
+            <ShipSelector
+                v-if="placedShips < 5"
+                :callback="setSelectedShip"
+                :shipState="shipState"
             />
+            <div>
+                <Grid
+                    playerName="You"
+                    :isAi="false"
+                    :gridState="p1GridState"
+                    :cellCallback="placeShip"
+                    :hoverEnterCallback="hoverEnterCallback"
+                    :hoverLeaveCallback="hoverLeaveCallback"
+                    :makeMove="makeMove"
+                />
+            </div>
+            <div v-if="placedShips == 5">
+                <Grid
+                    playerName="Computer"
+                    :isAi="true"
+                    :gridState="p2GridState"
+                    :cellCallback="makeMove"
+                />
+            </div>
+            <!-- <Button @click="aiService.aiMakeMove(p1GridState, previousMoves)" /> -->
         </div>
-        <div v-if="placedShips == 5">
-            Computer
-            <Grid :isAi="true" :gridState="p2GridState" :makeMove="makeMove" />
-        </div>
-        <Button @click="aiService.aiMakeMove(p1GridState, previousMoves)" />
     </div>
 </template>
 
@@ -30,9 +39,6 @@ import { defineComponent, onMounted, ref } from "vue";
 
 // services
 import { useAiService } from "@/ai/ai";
-
-// primevue
-import Button from "primevue/button";
 
 // config
 import shipConfig from "@/config/shipConfig";
@@ -45,7 +51,6 @@ export default defineComponent({
     components: {
         Grid,
         ShipSelector,
-        Button,
     },
     setup() {
         // reactive
@@ -140,3 +145,9 @@ export default defineComponent({
     },
 });
 </script>
+
+<style>
+body {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+</style>
