@@ -1,15 +1,15 @@
 <template>
-    <div class="font-mono">
-        <div class="flex justify-center text-3xl bg-white shadow-md p-2">
-            Battleships
-        </div>
-        <div class="flex justify-center space-x-10 mt-10">
-            <ShipSelector
-                v-if="placedShips < 5"
-                :callback="setSelectedShip"
-                :shipState="shipState"
-            />
-            <div>
+    <div class="flex justify-center text-3xl bg-white shadow-md p-2 mb-10">
+        Battleships
+    </div>
+    <div class="flex flex-col items-center">
+        <div class="space-y-10">
+            <div class="flex justify-center space-x-10">
+                <ShipSelector
+                    v-if="placedShips < 5"
+                    :callback="setSelectedShip"
+                    :shipState="shipState"
+                />
                 <Grid
                     playerName="You"
                     :isAi="false"
@@ -19,16 +19,19 @@
                     :hoverLeaveCallback="hoverLeaveCallback"
                     :makeMove="makeMove"
                 />
-            </div>
-            <div v-if="placedShips == 5">
                 <Grid
+                    v-if="placedShips == 5"
                     playerName="Computer"
                     :isAi="true"
                     :gridState="p2GridState"
                     :cellCallback="makeMove"
                 />
+                <!-- <Button @click="aiService.aiMakeMove(p1GridState, previousMoves)" /> -->
             </div>
-            <!-- <Button @click="aiService.aiMakeMove(p1GridState, previousMoves)" /> -->
+
+            <div class="bg-white p-8 shadow-md rounded-md text-center">
+                Select a ship from your fleet to place it on your grid
+            </div>
         </div>
     </div>
 </template>
@@ -145,9 +148,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style>
-body {
-    background-color: rgba(0, 0, 0, 0.04);
-}
-</style>
