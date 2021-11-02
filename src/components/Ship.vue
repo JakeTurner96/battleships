@@ -43,11 +43,7 @@ export default defineComponent({
         },
     },
     setup(props: any) {
-        const isShip = ref(false);
-
-        return {
-            isShip,
-        };
+        return {};
     },
 });
 </script>

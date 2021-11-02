@@ -3,7 +3,7 @@ import shipConfig from "@/config/shipConfig";
 // models
 import { Cell } from "@/models/cell";
 
-export const useAiService = () => {
+export const useGrid = () => {
     const generateGrid = () => {
         const cells: Cell[] = [];
         for (let i = 1; i <= 100; i++) {
@@ -21,7 +21,6 @@ export const useAiService = () => {
     const generateAiGridState = () => {
         const grid = generateGrid();
         const shipCoords = test();
-        console.log(shipCoords);
         shipCoords.forEach((coord: number) => {
             const found = grid.find((cell: Cell) => cell.id == coord);
             if (found) {
@@ -77,18 +76,9 @@ export const useAiService = () => {
 
     const makeMove = async (selectedCell: any, grid: any) => {
         const cell = grid.find((e: any) => e.id == selectedCell);
-        console.log(cell);
-        console.log(grid);
         if (cell.isSelected) {
-            console.log();
-            // var hitAudio = new Audio(require("@/resources/audio/oof.mp3"));
-            // hitAudio.play();
             cell.isDestroyed = true;
         } else {
-            // var missAudio = new Audio(
-            //     require("@/resources/audio/splash.mp3")
-            // );
-            // missAudio.play();
             cell.isMiss = true;
         }
     };

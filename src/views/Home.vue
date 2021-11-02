@@ -26,7 +26,6 @@
                     :gridState="p2GridState"
                     :cellCallback="makeMove"
                 />
-                <!-- <Button @click="aiService.aiMakeMove(p1GridState, previousMoves)" /> -->
             </div>
 
             <div class="bg-white p-8 shadow-md rounded-md text-center">
@@ -41,7 +40,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 
 // services
-import { useAiService } from "@/ai/ai";
+import { useGrid } from "@/hooks/gridHook";
 
 // config
 import shipConfig from "@/config/shipConfig";
@@ -65,7 +64,7 @@ export default defineComponent({
         const previousMoves = ref([]);
 
         // services
-        const aiService = useAiService();
+        const { generateGrid, generateAiGridState } = useGrid();
 
         // methods
         const setState = (start: number, length: number) => {
@@ -110,14 +109,8 @@ export default defineComponent({
         const makeMove = async (selectedCell: any, grid: any) => {
             var cell = grid.find((e: any) => e.id == selectedCell.id);
             if (selectedCell.isSelected) {
-                // var hitAudio = new Audio(require("@/resources/audio/oof.mp3"));
-                // hitAudio.play();
                 cell.isDestroyed = true;
             } else {
-                // var missAudio = new Audio(
-                //     require("@/resources/audio/splash.mp3")
-                // );
-                // missAudio.play();
                 cell.isMiss = true;
             }
         };
@@ -128,8 +121,8 @@ export default defineComponent({
 
         // lifecycle
         onMounted(() => {
-            p1GridState.value = aiService.generateGrid();
-            p2GridState.value = aiService.generateAiGridState();
+            p1GridState.value = generateGrid();
+            p2GridState.value = generateAiGridState();
         });
 
         return {
@@ -137,7 +130,6 @@ export default defineComponent({
             p2GridState,
             placedShips,
             shipState,
-            aiService,
             previousMoves,
             makeMove,
             placeShip,

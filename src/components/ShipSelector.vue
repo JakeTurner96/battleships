@@ -32,15 +32,13 @@ export default defineComponent({
         shipState: {
             type: Array,
         },
-        placedShips: {
-            type: Array,
-        },
         callback: {
             type: Function,
         },
     },
     setup(props: any) {
         const isVisible = ref(false);
+        console.log(props.shipState);
 
         const shipClickCallback = (ship: any) => {
             props.callback(ship);
