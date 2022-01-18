@@ -1,9 +1,12 @@
 <template>
-    <Home class="h-screen" />
+    <Home />
 </template>
 
 <script lang="ts">
+// vue
 import { defineComponent } from "vue";
+
+// views
 import Home from "@/views/Home.vue";
 
 export default defineComponent({

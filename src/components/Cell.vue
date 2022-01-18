@@ -55,6 +55,7 @@ export default defineComponent({
         },
         gridState: {
             type: Array,
+            default: () => [],
         },
     },
     setup(props: any) {

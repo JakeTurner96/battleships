@@ -2,36 +2,29 @@
     <div class="flex justify-center text-3xl bg-white shadow-md p-2 mb-10">
         Battleships
     </div>
-    <div class="flex flex-col items-center">
-        <div class="space-y-10">
-            <div class="flex justify-center space-x-10">
-                <ShipSelector
-                    v-if="placedShips < 5"
-                    :callback="setSelectedShip"
-                    :shipState="shipState"
-                />
-                <Grid
-                    playerName="You"
-                    :isAi="false"
-                    :gridState="p1GridState"
-                    :cellCallback="placeShip"
-                    :hoverEnterCallback="hoverEnterCallback"
-                    :hoverLeaveCallback="hoverLeaveCallback"
-                    :makeMove="makeMove"
-                />
-                <Grid
-                    v-if="placedShips == 5"
-                    playerName="Computer"
-                    :isAi="true"
-                    :gridState="p2GridState"
-                    :cellCallback="makeMove"
-                />
-            </div>
 
-            <div class="bg-white p-8 shadow-md rounded-md text-center">
-                Select a ship from your fleet to place it on your grid
-            </div>
-        </div>
+    <div class="flex justify-center space-x-10">
+        <ShipSelector
+            v-if="placedShips < 5"
+            :callback="setSelectedShip"
+            :shipState="shipState"
+        />
+        <Grid
+            playerName="You"
+            :isAi="false"
+            :gridState="p1GridState"
+            :cellCallback="placeShip"
+            :hoverEnterCallback="hoverEnterCallback"
+            :hoverLeaveCallback="hoverLeaveCallback"
+            :makeMove="makeMove"
+        />
+        <Grid
+            v-if="placedShips == 5"
+            playerName="Computer"
+            :isAi="true"
+            :gridState="p2GridState"
+            :cellCallback="makeMove"
+        />
     </div>
 </template>
 

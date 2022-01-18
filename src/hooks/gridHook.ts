@@ -4,6 +4,7 @@ import shipConfig from "@/config/shipConfig";
 import { Cell } from "@/models/cell";
 
 export const useGrid = () => {
+    // return a blank 10x10 grid
     const generateGrid = () => {
         const cells: Cell[] = [];
         for (let i = 1; i <= 100; i++) {
